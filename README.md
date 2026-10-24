@@ -37,6 +37,8 @@ tijera-fuerzas-/
 ├── simulacion_tijera.gif   # GIF del último run (se sobrescribe)
 ├── graficas_tijera.png     # gráfica F1 vs θ (se sobrescribe)
 ├── barrido_tijera.csv      # tabla de barrido (se sobrescribe)
+├── codigo/                 # copia del código completo para copiar y pegar
+│   └── tijera_fuerzas.py
 └── ejemplos/               # GIFs y salidas de consola de casos de ejemplo
 ```
 

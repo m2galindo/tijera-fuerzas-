@@ -395,7 +395,6 @@ if __name__ == "__main__":
 
     # 3) Gráficas y simulación
     try:
-        import matplotlib
         import matplotlib.pyplot as plt
         ths = [t / 2 for t in range(2, 179) if alfa(D, t / 2) is not None]
         fig, ax = plt.subplots(figsize=(6.5, 4.2))
@@ -411,4 +410,5 @@ if __name__ == "__main__":
         print("Gráficas guardadas en graficas_tijera.png")
         simular(D)
     except ImportError:
-        print("Instala matplotlib y pillow para las gráficas y la simulación: pip install matplotlib pillow")
+        print("Instala matplotlib y pillow para las gráficas y la simulación:")
+        print("  pip install matplotlib pillow   (o corre: python tijera_fuerzas.py --instalar)")
