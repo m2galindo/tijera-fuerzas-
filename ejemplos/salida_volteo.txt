@@ -1,0 +1,56 @@
+=== Datos de entrada (Enter = valor por defecto) ===
+  m      = 40.0 kg
+  theta  = 85.0 °
+  L      = 0.12 m
+  a      = 0.2 m
+  b      = 0.1 m
+  c      = 0.2 m
+  h      = 0.3 m
+  y_A    = 0.25 m
+  y_H    = 0.45 m
+  mu_k   = 0.35 
+  d      = a + b + c = 0.500 m
+
+Mesa horizontal (α = 0°) con θ = 24.62°
+
+--- m = 40.0 kg, θ = 24.62° ---
+  α [°]           0.000
+  N [N]         392.400
+  f [N]           0.000
+  G_y [N]       196.200
+  H_y [N]       196.200
+  F1 [N]        235.440
+  T [N]         856.116
+  C_x [N]       856.116
+  C_y [N]         0.000
+  A_y [N]       196.200
+  N1 [N]        196.200
+  N2 [N]        196.200
+  desliza    no
+  voltea     no
+
+Ángulo que pusiste:
+
+--- m = 40.0 kg, θ = 85.00° ---
+  α [°]          33.804
+  N [N]         326.065
+  f [N]         218.311
+  G_y [N]       117.383
+  H_y [N]       275.017
+  F1 [N]         58.916
+  T [N]          20.539
+  C_x [N]        20.539
+  C_y [N]         0.000
+  A_y [N]       117.383
+  N1 [N]        117.383
+  N2 [N]        275.017
+  desliza    sí
+  voltea     sí
+
+La caja desliza con α > 19.29° (θ > 49.53°)
+La caja se voltea con α > 18.43° (θ > 48.25°)
+>> Con tu ángulo la caja SE VOLTEA y se cae.
+
+Tabla de barrido guardada en barrido_tijera.csv
+Gráficas guardadas en graficas_tijera.png
+Simulación guardada en simulacion_tijera.gif
