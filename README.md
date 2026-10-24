@@ -31,6 +31,8 @@ Programa en Python que calcula las fuerzas de una mesa elevadora de tijera (Mode
 tijera-fuerzas-/
 ├── tijera_fuerzas.py       # el programa
 ├── requirements.txt        # dependencias (matplotlib, pillow)
+├── ejecutar.bat            # lanzador de doble clic para Windows
+├── ejecutar.command        # lanzador de doble clic para macOS / Linux
 ├── README.md
 ├── simulacion_tijera.gif   # GIF del último run (se sobrescribe)
 ├── graficas_tijera.png     # gráfica F1 vs θ (se sobrescribe)
@@ -40,78 +42,135 @@ tijera-fuerzas-/
 
 ## Requisitos e instalación
 
-Necesitas **Python 3.9 o superior** y dos librerías: `matplotlib` (dibuja y anima) y `pillow` (guarda el GIF).
+Necesitas **Python 3.9 o superior** y dos librerías: `matplotlib` (dibuja y anima) y `pillow` (guarda el GIF). Funciona en Windows, macOS y Linux.
 
-### 1. Revisa si tienes Python
+> **Atajo:** si no quieres instalar nada a mano, salta a [Opción C: doble clic](#opción-c-doble-clic-instala-y-corre-solo). Los lanzadores crean el entorno e instalan las librerías por ti.
 
-Abre una terminal (en Mac: Terminal; en Windows: PowerShell o CMD) y corre:
+### 1. Instala Python
 
-```bash
-python3 --version      # Mac / Linux
-python --version       # Windows
-```
+| Sistema | Cómo |
+|---|---|
+| **Windows** | Descarga el instalador de <https://www.python.org/downloads/>, ábrelo y **marca la casilla "Add Python to PATH"** antes de darle Install. También puedes instalarlo desde la Microsoft Store (busca "Python 3.12" o más reciente). |
+| **macOS** | Descarga el instalador de <https://www.python.org/downloads/> o usa Homebrew: `brew install python`. |
+| **Linux (Debian/Ubuntu)** | `sudo apt install python3 python3-venv python3-pip` |
 
-Si no te sale una versión 3.9 o mayor, instálalo desde <https://www.python.org/downloads/>. En Windows marca la casilla **"Add Python to PATH"** durante la instalación.
+Verifica que quedó:
+
+| Sistema | Comando |
+|---|---|
+| Windows (PowerShell o CMD) | `python --version` (si no responde, prueba `py --version`) |
+| macOS / Linux | `python3 --version` |
+
+Debe decir 3.9 o mayor.
 
 ### 2. Descarga el repo
+
+Con git:
 
 ```bash
 git clone https://github.com/m2galindo/tijera-fuerzas-.git
 cd tijera-fuerzas-
 ```
 
-Si no usas git, en GitHub dale a **Code → Download ZIP**, descomprime y entra a la carpeta desde la terminal con `cd`.
+Sin git: en GitHub dale a **Code → Download ZIP**, descomprime y abre la carpeta.
+En Windows puedes abrir una terminal dentro de la carpeta con clic derecho → "Abrir en Terminal" (o escribe `cmd` en la barra de direcciones del Explorador).
 
 ### 3. Instala las dependencias
 
-Se recomienda un entorno virtual para no mezclar librerías con las de tu sistema:
+Se recomienda un entorno virtual para no mezclar librerías con las de tu sistema.
 
-```bash
-# crear el entorno (una sola vez)
-python3 -m venv .venv
+**Windows (PowerShell):**
 
-# activarlo (cada vez que abras una terminal nueva)
-source .venv/bin/activate          # Mac / Linux
-.venv\Scripts\activate             # Windows
-
-# instalar
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
+
+**Windows (CMD):**
+
+```bat
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
+**macOS / Linux:**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+El entorno se crea una sola vez. En cada terminal nueva solo repite la línea de activación (la segunda).
 
 Sin entorno virtual también funciona:
 
 ```bash
-pip install matplotlib pillow
+pip install matplotlib pillow          # Windows: python -m pip install matplotlib pillow
 ```
 
 ### 4. Verifica la instalación
 
 ```bash
-python3 -c "import matplotlib, PIL; print('OK')"
+python -c "import matplotlib, PIL; print('OK')"      # Windows
+python3 -c "import matplotlib, PIL; print('OK')"     # macOS / Linux
 ```
 
 Debe imprimir `OK`. Si marca `ModuleNotFoundError`, repite el paso 3 con el entorno activado.
 
 ## Cómo correrlo
 
-Siempre desde la carpeta del repo. En Windows usa `python` en lugar de `python3`.
+Hay tres formas. En todas, el programa genera el GIF, la gráfica y el CSV en la carpeta del repo.
 
-### Modo interactivo
+> En los comandos de abajo usa `python` en Windows y `python3` en macOS / Linux. Con el entorno virtual activado, `python` funciona en todos.
 
-```bash
-python3 tijera_fuerzas.py
-```
-
-Te pregunta uno por uno m, θ, L, a, b, c, h, y_A, y_H y μk. Con **Enter** usa el valor por defecto que aparece entre corchetes. Acepta coma o punto decimal.
-
-### Modo directo (con argumentos)
-
-No pregunta nada. Los datos que no pongas usan su valor por defecto.
+### Opción A: te pide los datos (interactivo)
 
 ```bash
-python3 tijera_fuerzas.py --m 40 --theta 85
-python3 tijera_fuerzas.py --m 20 --theta 60 --mu_k 0.5
+python tijera_fuerzas.py
 ```
+
+Te pregunta uno por uno m, θ, L, a, b, c, h, y_A, y_H y μk, con el valor por defecto entre corchetes:
+
+```
+Masa de la caja (máx. 40 kg) [40.0 kg]: 20,5
+Ángulo de la tijera θ [50.0 °]:
+```
+
+- **Enter** = usa el valor por defecto.
+- Escribe un número para cambiarlo (acepta coma o punto decimal).
+- Si escribes algo que no es número, te lo vuelve a pedir.
+
+**Mezclar las dos formas:** con `-i` (o `--interactivo`) te pregunta todo, pero los argumentos que pases quedan como valor por defecto de esa pregunta:
+
+```bash
+python tijera_fuerzas.py -i --theta 85
+```
+
+Aquí te pregunta todos los datos y en θ el valor que aparece es 85.
+
+### Opción B: directo, con argumentos (no pregunta nada)
+
+```bash
+python tijera_fuerzas.py --m 40 --theta 85
+python tijera_fuerzas.py --m 20 --theta 60 --mu_k 0.5
+```
+
+Los datos que no pongas usan su valor por defecto. Es lo más cómodo para repetir un caso.
+
+### Opción C: doble clic (instala y corre solo)
+
+El repo trae dos lanzadores. La primera vez crean el entorno virtual e instalan las librerías; después solo corren el programa y te piden los datos.
+
+| Sistema | Qué hacer |
+|---|---|
+| **Windows** | Doble clic en `ejecutar.bat`. Si prefieres terminal: `.\ejecutar.bat` |
+| **macOS** | Doble clic en `ejecutar.command`. Si macOS dice que no se puede abrir, clic derecho → Abrir. Desde terminal: `./ejecutar.command` |
+| **Linux** | `./ejecutar.command` |
+
+También aceptan argumentos, por ejemplo `.\ejecutar.bat --theta 85` o `./ejecutar.command -i --theta 85`.
 
 ### Qué pasa al correr
 
@@ -122,10 +181,15 @@ python3 tijera_fuerzas.py --m 20 --theta 60 --mu_k 0.5
 
 > **Importante:** cada corrida **sobrescribe** `simulacion_tijera.gif`, `graficas_tijera.png` y `barrido_tijera.csv`. Si quieres conservar uno, cámbiale el nombre o muévelo antes de volver a correr:
 > ```bash
-> mv simulacion_tijera.gif ejemplos/mi_caso.gif
+> mv simulacion_tijera.gif ejemplos/mi_caso.gif        # macOS / Linux
+> move simulacion_tijera.gif ejemplos\mi_caso.gif      # Windows
 > ```
 
-> Si corres sin pantalla (servidor, SSH) usa `MPLBACKEND=Agg python3 tijera_fuerzas.py --theta 85`.
+> Si corres sin pantalla (servidor, SSH) usa `MPLBACKEND=Agg python3 tijera_fuerzas.py --theta 85`. En Windows: `set MPLBACKEND=Agg` y luego el comando.
+
+### Ver el GIF
+
+Ábrelo con el navegador (arrástralo a una pestaña) o con el visor de imágenes. En Windows el visor de fotos no anima GIFs; usa el navegador.
 
 ## Datos de entrada
 
@@ -215,6 +279,7 @@ El programa avisa y termina sin generar archivos.
 
 ## Cómo probar tus propios casos
 
+0. Si prefieres que te pregunte, corre `python tijera_fuerzas.py` sin argumentos.
 1. Elige qué quieres cambiar: masa, ángulo, medidas de la caja o fricción.
 2. Corre el programa con los argumentos correspondientes, por ejemplo:
    ```bash
@@ -264,7 +329,11 @@ La fuerza que aplica el usuario en la manivela produce T y fija θ. Su valor dep
 
 | Problema | Solución |
 |---|---|
-| `python3: command not found` (Windows) | Usa `python` en lugar de `python3` |
+| `python3: command not found` (Windows) | Usa `python` en lugar de `python3`, o `py` |
+| `'python' is not recognized` (Windows) | Reinstala Python marcando "Add Python to PATH", o usa `py` |
+| PowerShell dice que la ejecución de scripts está deshabilitada al activar el entorno | Usa CMD (`.venv\Scripts\activate.bat`) o corre `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
+| Los símbolos θ, α, μ salen raros en Windows | Ya se fuerza UTF-8 en el programa; si sigue, usa Windows Terminal o `chcp 65001` |
+| macOS no deja abrir `ejecutar.command` | Clic derecho → Abrir, o `chmod +x ejecutar.command` |
 | `ModuleNotFoundError: No module named 'matplotlib'` | Activa el entorno virtual y corre `pip install -r requirements.txt` |
 | `pip: command not found` | Usa `python3 -m pip install -r requirements.txt` |
 | `error: externally-managed-environment` | Usa un entorno virtual (paso 3 de la instalación) |

@@ -19,12 +19,21 @@ Su valor depende de la rosca y no se calcula aquí.
 Uso:
   python tijera_fuerzas.py                      -> pregunta los datos
   python tijera_fuerzas.py --m 40 --theta 80    -> sin preguntar (los demás datos por defecto)
+  python tijera_fuerzas.py -i                   -> pregunta todo, aunque pases argumentos
+                                                   (los argumentos se usan como valor por defecto)
 Requiere: pip install matplotlib pillow
 """
 
 import argparse
 import math
 import sys
+
+# En Windows la consola puede no soportar θ, α, μ: forzamos UTF-8
+for _f in (sys.stdout, sys.stderr):
+    try:
+        _f.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
 
 g = 9.81  # m/s²
 
@@ -46,17 +55,20 @@ DATOS = {
 # ----------------------------- ENTRADA DE DATOS -----------------------------
 def pedir_datos():
     p = argparse.ArgumentParser()
+    p.add_argument("-i", "--interactivo", action="store_true",
+                   help="pregunta todos los datos (los argumentos pasan a ser el valor por defecto)")
     for k in DATOS:
         p.add_argument(f"--{k}", type=float)
     args = vars(p.parse_args())
-    preguntar = all(v is None for v in args.values()) and sys.stdin.isatty()
+    forzar = args.pop("interactivo")
+    preguntar = (forzar or all(v is None for v in args.values())) and sys.stdin.isatty()
 
     d = {}
     print("=== Datos de entrada (Enter = valor por defecto) ===")
     for k, (val, uni, desc) in DATOS.items():
-        if args[k] is not None:
-            d[k] = args[k]
-        elif preguntar:
+        if preguntar:
+            if args[k] is not None:
+                val = args[k]
             while True:
                 r = input(f"{desc} [{val} {uni}]: ").strip().replace(",", ".")
                 if r == "":
@@ -67,6 +79,8 @@ def pedir_datos():
                     break
                 except ValueError:
                     print("  Escribe un número.")
+        elif args[k] is not None:
+            d[k] = args[k]
         else:
             d[k] = val
         print(f"  {k:<6} = {d[k]} {uni}")
