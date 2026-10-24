@@ -19,6 +19,7 @@ Su valor depende de la rosca y no se calcula aquí.
 Uso:
   python tijera_fuerzas.py                      -> pregunta los datos
   python tijera_fuerzas.py --m 40 --theta 80    -> sin preguntar (los demás datos por defecto)
+  python tijera_fuerzas.py --instalar           -> instala matplotlib y pillow y termina
   python tijera_fuerzas.py -i                   -> pregunta todo, aunque pases argumentos
                                                    (los argumentos se usan como valor por defecto)
 Requiere: pip install matplotlib pillow
@@ -52,15 +53,36 @@ DATOS = {
 }
 
 
+# ----------------------------- DEPENDENCIAS -----------------------------
+DEPENDENCIAS = ["matplotlib", "pillow"]
+
+
+def instalar_dependencias():
+    """Instala las dependencias con el mismo Python que corre el programa."""
+    import subprocess
+    print(f"Instalando: {', '.join(DEPENDENCIAS)} ...")
+    r = subprocess.run([sys.executable, "-m", "pip", "install", *DEPENDENCIAS])
+    if r.returncode != 0:
+        print("\nNo se pudo instalar. Revisa tu conexión o usa un entorno virtual (ver README).")
+        sys.exit(r.returncode)
+    print("\nListo: dependencias instaladas.")
+
+
 # ----------------------------- ENTRADA DE DATOS -----------------------------
 def pedir_datos():
     p = argparse.ArgumentParser()
     p.add_argument("-i", "--interactivo", action="store_true",
                    help="pregunta todos los datos (los argumentos pasan a ser el valor por defecto)")
+    p.add_argument("--instalar", action="store_true",
+                   help="instala las dependencias (matplotlib, pillow); sin otros datos, termina")
     for k in DATOS:
         p.add_argument(f"--{k}", type=float)
     args = vars(p.parse_args())
     forzar = args.pop("interactivo")
+    if args.pop("instalar"):
+        instalar_dependencias()
+        if all(v is None for v in args.values()) and not forzar:
+            sys.exit(0)
     preguntar = (forzar or all(v is None for v in args.values())) and sys.stdin.isatty()
 
     d = {}

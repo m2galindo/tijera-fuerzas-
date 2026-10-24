@@ -77,6 +77,17 @@ En Windows puedes abrir una terminal dentro de la carpeta con clic derecho → "
 
 ### 3. Instala las dependencias
 
+**Forma más fácil: una sola bandera.** El programa se instala sus propias dependencias (`matplotlib` y `pillow`) con el mismo Python que lo corre:
+
+```bash
+python tijera_fuerzas.py --instalar          # Windows
+python3 tijera_fuerzas.py --instalar         # macOS / Linux
+```
+
+Instala y termina. Si además le pasas datos (`--instalar --theta 85`) o `-i`, después de instalar corre normal. Si usas entorno virtual, actívalo antes para que se instale ahí.
+
+**Forma manual.**
+
 Se recomienda un entorno virtual para no mezclar librerías con las de tu sistema.
 
 **Windows (PowerShell):**
@@ -192,6 +203,8 @@ También aceptan argumentos, por ejemplo `.\ejecutar.bat --theta 85` o `./ejecut
 Ábrelo con el navegador (arrástralo a una pestaña) o con el visor de imágenes. En Windows el visor de fotos no anima GIFs; usa el navegador.
 
 ## Datos de entrada
+
+Otras banderas: `--instalar` (instala las dependencias) e `-i` / `--interactivo` (pregunta todo).
 
 | Argumento | Descripción | Por defecto |
 |---|---|---|
@@ -334,7 +347,7 @@ La fuerza que aplica el usuario en la manivela produce T y fija θ. Su valor dep
 | PowerShell dice que la ejecución de scripts está deshabilitada al activar el entorno | Usa CMD (`.venv\Scripts\activate.bat`) o corre `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
 | Los símbolos θ, α, μ salen raros en Windows | Ya se fuerza UTF-8 en el programa; si sigue, usa Windows Terminal o `chcp 65001` |
 | macOS no deja abrir `ejecutar.command` | Clic derecho → Abrir, o `chmod +x ejecutar.command` |
-| `ModuleNotFoundError: No module named 'matplotlib'` | Activa el entorno virtual y corre `pip install -r requirements.txt` |
+| `ModuleNotFoundError: No module named 'matplotlib'` | Corre `python tijera_fuerzas.py --instalar` (con el entorno virtual activado si usas uno) o `pip install -r requirements.txt` |
 | `pip: command not found` | Usa `python3 -m pip install -r requirements.txt` |
 | `error: externally-managed-environment` | Usa un entorno virtual (paso 3 de la instalación) |
 | `ERROR: ... la tijera no puede armar la mesa` | Elige otro θ entre 0° y 90° o revisa L, y_A, y_H y d |
