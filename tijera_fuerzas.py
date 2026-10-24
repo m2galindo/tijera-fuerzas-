@@ -362,16 +362,13 @@ if __name__ == "__main__":
         import matplotlib
         import matplotlib.pyplot as plt
         ths = [t / 2 for t in range(2, 179) if alfa(D, t / 2) is not None]
-        fig, ax = plt.subplots(1, 2, figsize=(11, 4.2))
+        fig, ax = plt.subplots(figsize=(6.5, 4.2))
         for m in (10, 20, 30, 40):
             rs = [calcular(D, m, t) for t in ths]
-            ax[0].plot(ths, [x["T [N]"] for x in rs], label=f"m = {m} kg")
-            ax[1].plot(ths, [x["F1 [N]"] for x in rs], label=f"m = {m} kg")
-        ax[0].set(title="Fuerza en el tornillo T vs θ", xlabel="θ [°]", ylabel="T [N]")
-        ax[1].set(title="Fuerza en los eslabones F1 vs θ", xlabel="θ [°]", ylabel="F1 [N]")
-        for x in ax:
-            x.grid(alpha=0.3)
-            x.legend()
+            ax.plot(ths, [x["F1 [N]"] for x in rs], label=f"m = {m} kg")
+        ax.set(title="Fuerza en los eslabones F1 vs θ", xlabel="θ [°]", ylabel="F1 [N]")
+        ax.grid(alpha=0.3)
+        ax.legend()
         fig.tight_layout()
         fig.savefig("graficas_tijera.png", dpi=200)
         plt.close(fig)
